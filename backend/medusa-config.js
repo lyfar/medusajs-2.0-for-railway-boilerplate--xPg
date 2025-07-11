@@ -1,4 +1,5 @@
 import { loadEnv, Modules, defineConfig } from '@medusajs/utils';
+import StickerPricingService from './src/modules/sticker-pricing/service';
 import {
   ADMIN_CORS,
   AUTH_CORS,
@@ -30,7 +31,7 @@ const medusaConfig = {
   projectConfig: {
     databaseUrl: DATABASE_URL,
     databaseLogging: false,
-    redisUrl: REDIS_URL,
+//   redisUrl: REDIS_URL,
     workerMode: WORKER_MODE,
     http: {
       adminCors: ADMIN_CORS,
@@ -45,6 +46,7 @@ const medusaConfig = {
     disable: SHOULD_DISABLE_ADMIN,
   },
   modules: [
+    StickerPricingService,
     {
       key: Modules.FILE,
       resolve: '@medusajs/file',
@@ -70,21 +72,22 @@ const medusaConfig = {
         ]
       }
     },
-    ...(REDIS_URL ? [{
-      key: Modules.EVENT_BUS,
-      resolve: '@medusajs/event-bus-redis',
-      options: {
-        redisUrl: REDIS_URL
-      }
-    },
+//    ...(REDIS_URL ? [{
+    ...(REDIS_URL ? [
+//      key: Modules.EVENT_BUS,
+//      resolve: '@medusajs/event-bus-redis',
+//      options: {
+//        redisUrl: REDIS_URL
+//      }
+//    },
     {
-      key: Modules.WORKFLOW_ENGINE,
-      resolve: '@medusajs/workflow-engine-redis',
-      options: {
-        redis: {
-          url: REDIS_URL,
-        }
-      }
+      // key: Modules.WORKFLOW_ENGINE,
+      // resolve: '@medusajs/workflow-engine-redis',
+//      options: {
+ //       redis: {
+ //         url: REDIS_URL,
+ //       }
+ //     }
     }] : []),
     ...(SENDGRID_API_KEY && SENDGRID_FROM_EMAIL || RESEND_API_KEY && RESEND_FROM_EMAIL ? [{
       key: Modules.NOTIFICATION,
